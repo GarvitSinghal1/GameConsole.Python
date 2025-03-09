@@ -3,8 +3,10 @@ import os
 import sys
 import json
 import importlib
+import importlib.util
 import tkinter as tk
 from tkinter import ttk, messagebox, scrolledtext
+import subprocess
 
 class GameConsoleGUI:
     def __init__(self, root):
@@ -67,7 +69,7 @@ class GameConsoleGUI:
         games_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
         # Game information text
-        self.game_info = scrolledtext.ScrolledText(
+        self.text_area = scrolledtext.ScrolledText(
             games_frame,
             width=40,
             height=10,
@@ -76,8 +78,8 @@ class GameConsoleGUI:
             fg="#FFFFFF",
             wrap=tk.WORD
         )
-        self.game_info.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
-        self.game_info.config(state=tk.DISABLED)
+        self.text_area.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+        self.text_area.config(state=tk.DISABLED)
         
         # Games listbox with scrollbar
         list_frame = tk.Frame(games_frame, bg="#222222")
@@ -180,7 +182,16 @@ class GameConsoleGUI:
         """Show a welcome message and populate the games list."""
         # Populate games listbox
         for i, game in enumerate(self.games):
-            self.games_listbox.insert(tk.END, f"{i+1}. {game['name']}")
+            game_name = f"{i+1}. {game['name']}"
+            self.games_listbox.insert(tk.END, game_name)
+            
+            # Check if GUI version exists
+            try:
+                importlib.util.find_spec(f"games.{game['module']}_gui")
+                # GUI version exists - use default color
+            except (ImportError, ModuleNotFoundError):
+                # GUI version doesn't exist - use red color
+                self.games_listbox.itemconfig(i, {'fg': 'red'})
         
         # Select the first game by default if available
         if self.games:
@@ -189,24 +200,49 @@ class GameConsoleGUI:
     
     def write_text(self, text, tag="normal"):
         """Write text to the game info area."""
-        self.game_info.config(state=tk.NORMAL)
-        self.game_info.delete(1.0, tk.END)
-        self.game_info.insert(tk.END, text)
-        self.game_info.config(state=tk.DISABLED)
+        self.text_area.config(state=tk.NORMAL)
+        self.text_area.delete(1.0, tk.END)
+        self.text_area.insert(tk.END, text)
+        self.text_area.config(state=tk.DISABLED)
     
     def on_game_select(self, event):
-        """Handle game selection from the listbox."""
+        """Handle game selection event."""
         if not self.games_listbox.curselection():
             return
         
+        # Get the selected game
         index = self.games_listbox.curselection()[0]
         game = self.games[index]
         
+        # Clear the text area
+        self.text_area.config(state=tk.NORMAL)
+        self.text_area.delete(1.0, tk.END)
+        
         # Display game information
-        info_text = f"{game['name']}\n\n"
-        info_text += f"Description:\n{game['description']}\n\n"
-        info_text += f"Difficulty: {game.get('difficulty', 'N/A')}\n"
-        info_text += f"Players: {game.get('players', 1)}\n\n"
+        info_text = f"{game['name']}\n"
+        info_text += "=" * len(game['name']) + "\n\n"
+        info_text += f"Difficulty: {game['difficulty']}\n"
+        info_text += f"Players: {game['players']}\n\n"
+        info_text += f"Description: {game['description']}\n\n"
+        
+        # Check for GUI version availability
+        game_module = game['module']
+        if '.' in game_module:
+            # For modules with subdirectories
+            base_module = game_module.rsplit('.', 1)[0]
+            module_name = game_module.rsplit('.', 1)[1]
+            gui_module_path = f"games.{base_module}.{module_name}_gui"
+        else:
+            # For modules directly in the games directory
+            gui_module_path = f"games.{game_module}_gui"
+            
+        gui_available = importlib.util.find_spec(gui_module_path) is not None
+        
+        if gui_available:
+            info_text += "GUI Version: Available\n\n"
+        else:
+            info_text += "GUI Version: Not available (Terminal version only)\n\n"
+        
         info_text += "Double-click to play or click the Play Game button."
         
         self.write_text(info_text)
@@ -221,34 +257,48 @@ class GameConsoleGUI:
         game = self.games[index]
         game_module = game['module']
         
+        # Determine the module path based on whether it's in a subdirectory
+        if '.' in game_module:
+            # For modules with subdirectories
+            base_module = game_module.rsplit('.', 1)[0]
+            module_name = game_module.rsplit('.', 1)[1]
+            gui_module_path = f"games.{base_module}.{module_name}_gui"
+        else:
+            # For modules directly in the games directory
+            gui_module_path = f"games.{game_module}_gui"
+        
+        # Check if GUI version is available
+        gui_available = importlib.util.find_spec(gui_module_path) is not None
+        
         # Try to import and run the GUI version of the game
         try:
             # Hide the console window temporarily
             self.root.withdraw()
             
-            # Import and run the game
-            game_path = f"games.{game_module}_gui"
-            
-            try:
-                game_module = importlib.import_module(game_path)
-                game_module.main()
-            except (ImportError, ModuleNotFoundError):
-                # If GUI version fails, ask if they want to try terminal version
+            if gui_available:
+                # Import and run the GUI game
+                game_module_obj = importlib.import_module(gui_module_path)
+                game_module_obj.main()
+            else:
+                # GUI version is not available, ask about terminal version
                 result = messagebox.askyesno(
                     "GUI Version Not Available", 
-                    f"The GUI version of {game['name']} is not available. Would you like to run the terminal version instead?"
-                )
+                    f"No GUI version available for {game['name']}. Would you like to run the terminal version?")
                 
                 if result:
-                    # Fall back to terminal version
-                    os.system(f"python -m games.{game['module']}")
+                    # Temporarily close the tkinter window and run the terminal game
+                    self.root.withdraw()
+                    
+                    # Create a subprocess to run the game in terminal
+                    subprocess.run([sys.executable, "console.py", "terminal", str(index+1)])
             
-            # Show the console window again
+            # Show the console window again after the game is finished
             self.root.deiconify()
             
         except Exception as e:
-            messagebox.showerror("Error", f"Error launching game: {str(e)}")
             self.root.deiconify()
+            messagebox.showerror("Error", f"Error launching game: {str(e)}")
+            print(f"Error details: {e}")  # Print detailed error to console for debugging
     
     def refresh_games(self):
         """Refresh the list of games."""
@@ -257,9 +307,18 @@ class GameConsoleGUI:
         # Clear and repopulate the listbox
         self.games_listbox.delete(0, tk.END)
         for i, game in enumerate(self.games):
-            self.games_listbox.insert(tk.END, f"{i+1}. {game['name']}")
+            game_name = f"{i+1}. {game['name']}"
+            self.games_listbox.insert(tk.END, game_name)
+            
+            # Check if GUI version exists
+            try:
+                importlib.util.find_spec(f"games.{game['module']}_gui")
+                # GUI version exists - use default color
+            except (ImportError, ModuleNotFoundError):
+                # GUI version doesn't exist - use red color
+                self.games_listbox.itemconfig(i, {'fg': 'red'})
         
-        # Select the first game if available
+        # Select the first game by default if available
         if self.games:
             self.games_listbox.selection_set(0)
             self.on_game_select(None)

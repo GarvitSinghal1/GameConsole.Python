@@ -2,70 +2,175 @@
     {
         "name": "Number Guesser",
         "description": "Try to guess a random number between 1 and 100.",
-        "module": "number_guesser",
+        "module": "number_guesser.number_guesser",
         "difficulty": "Easy",
         "players": 1
     },
     {
         "name": "Hangman",
         "description": "Classic word guessing game. Try to guess the word before the hangman is complete.",
-        "module": "hangman",
+        "module": "hangman.hangman",
         "difficulty": "Medium",
         "players": 1
     },
     {
         "name": "Rock Paper Scissors",
         "description": "Play the classic Rock Paper Scissors game against the computer.",
-        "module": "rock_paper_scissors",
+        "module": "rock_paper_scissors.rock_paper_scissors",
         "difficulty": "Easy",
         "players": 1
     },
     {
         "name": "Quiz Game",
         "description": "Test your knowledge with this multiple-choice quiz game.",
-        "module": "quiz_game",
+        "module": "quiz_game.quiz_game",
         "difficulty": "Medium",
         "players": 1
     },
     {
         "name": "Tic Tac Toe",
         "description": "Classic Tic Tac Toe game. Play against a friend on the same computer.",
-        "module": "tic_tac_toe",
+        "module": "tic_tac_toe.tic_tac_toe",
         "difficulty": "Easy",
         "players": 2
     },
     {
         "name": "Math Challenge",
         "description": "Test your math skills with increasingly difficult problems.",
-        "module": "math_challenge",
+        "module": "math_challenge.math_challenge",
         "difficulty": "Medium",
         "players": 1
     },
     {
         "name": "Word Scramble",
         "description": "Unscramble letters to form valid words.",
-        "module": "word_scramble",
+        "module": "word_scramble.word_scramble",
         "difficulty": "Medium",
         "players": 1
     },
     {
         "name": "Blackjack",
         "description": "Play the classic card game Blackjack against the dealer.",
-        "module": "blackjack",
+        "module": "blackjack.blackjack",
         "difficulty": "Medium",
         "players": 1
     },
     {
         "name": "Snake",
         "description": "Navigate a snake to collect food and grow without hitting the walls or yourself.",
-        "module": "snake",
+        "module": "snake.snake",
         "difficulty": "Hard",
         "players": 1
     },
     {
         "name": "Text Adventure",
         "description": "Embark on a short text-based adventure with multiple paths and endings.",
-        "module": "text_adventure",
+        "module": "text_adventure.text_adventure",
+        "difficulty": "Medium",
+        "players": 1
+    },
+    {
+        "name": "Connect Four",
+        "description": "Classic two-player game where players take turns dropping colored discs into a vertical grid.",
+        "module": "connect_four.connect_four",
+        "difficulty": "Medium",
+        "players": 2
+    },
+    {
+        "name": "Pong",
+        "description": "A simple arcade game simulating table tennis.",
+        "module": "pong.pong",
+        "difficulty": "Medium",
+        "players": 2
+    },
+    {
+        "name": "Tetris",
+        "description": "The classic falling block puzzle game.",
+        "module": "tetris.tetris",
+        "difficulty": "Hard",
+        "players": 1
+    },
+    {
+        "name": "Mastermind",
+        "description": "A code-breaking game where you try to guess a hidden color pattern.",
+        "module": "mastermind.mastermind",
+        "difficulty": "Medium",
+        "players": 1
+    },
+    {
+        "name": "Yahtzee",
+        "description": "A dice game where players roll dice to score combinations.",
+        "module": "yahtzee.yahtzee",
+        "difficulty": "Medium",
+        "players": 1
+    },
+    {
+        "name": "Simon Says",
+        "description": "A memory game where players must repeat a growing sequence of colors/buttons.",
+        "module": "simon_says.simon_says",
+        "difficulty": "Medium",
+        "players": 1
+    },
+    {
+        "name": "Wordle",
+        "description": "A word guessing game where you get hints after each guess.",
+        "module": "wordle.wordle",
+        "difficulty": "Medium",
+        "players": 1
+    },
+    {
+        "name": "Tower of Hanoi",
+        "description": "A mathematical puzzle where you move discs between three pegs.",
+        "module": "tower_of_hanoi.tower_of_hanoi",
+        "difficulty": "Hard",
+        "players": 1
+    },
+    {
+        "name": "2048",
+        "description": "A sliding tile puzzle game where you combine tiles to reach 2048.",
+        "module": "game_2048.game_2048",
+        "difficulty": "Medium",
+        "players": 1
+    },
+    {
+        "name": "Sudoku",
+        "description": "Number placement puzzle where you fill a 9x9 grid with digits.",
+        "module": "sudoku.sudoku",
+        "difficulty": "Hard",
+        "players": 1
+    },
+    {
+        "name": "Flappy Bird",
+        "description": "A simple arcade game where you navigate a bird through pipes.",
+        "module": "flappy_bird.flappy_bird",
+        "difficulty": "Medium",
+        "players": 1
+    },
+    {
+        "name": "Anagrams",
+        "description": "Create words from a set of letters.",
+        "module": "anagrams.anagrams",
+        "difficulty": "Medium",
+        "players": 1
+    },
+    {
+        "name": "Typing Speed Test",
+        "description": "Test your typing speed and accuracy.",
+        "module": "typing_speed_test.typing_speed_test",
+        "difficulty": "Easy",
+        "players": 1
+    },
+    {
+        "name": "Memory Match",
+        "description": "Match pairs of cards from a face-down board.",
+        "module": "memory_match.memory_match",
+        "difficulty": "Easy",
+        "players": 1
+    },
+    {
+        "name": "Minesweeper",
+        "description": "Clear a minefield without detonating any mines.",
+        "module": "minesweeper.minesweeper",
         "difficulty": "Medium",
         "players": 1
     }

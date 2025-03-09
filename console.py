@@ -131,44 +131,50 @@ class GameConsole:
             time.sleep(1)
             
             try:
-                # Import and run the game based on interface mode
+                # Check if the game module path contains a dot, indicating a subdirectory
                 if self.interface_mode == "terminal":
                     game_path = f"games.{game_module}"
                     __import__(game_path)
-                    game_module = sys.modules[game_path]
+                    game_module_obj = sys.modules[game_path]
                     
                     # Clear screen before starting the game
                     self.clear_screen()
                     
                     # Run the game's main function
-                    game_module.main()
+                    game_module_obj.main()
                 else:  # GUI mode
-                    game_path = f"games.{game_module}_gui"
+                    # For modules with subdirectories, the GUI version is in the same directory
+                    if '.' in game_module:
+                        base_module = game_module.rsplit('.', 1)[0]
+                        module_name = game_module.rsplit('.', 1)[1]
+                        gui_game_path = f"games.{base_module}.{module_name}_gui"
+                    else:
+                        gui_game_path = f"games.{game_module}_gui"
+                    
                     try:
-                        __import__(game_path)
-                        game_module = sys.modules[game_path]
+                        __import__(gui_game_path)
+                        gui_game_module = sys.modules[gui_game_path]
                         
-                        # Run the GUI version's main function
-                        game_module.main()
+                        # Run the GUI game's main function
+                        gui_game_module.main()
                     except (ImportError, ModuleNotFoundError):
-                        print(f"{Fore.RED}GUI version of {game['name']} not available. Would you like to play the terminal version?{Style.RESET_ALL}")
-                        choice = input(f"{Fore.CYAN}(y/n): {Style.RESET_ALL}").lower()
-                        if choice.startswith('y'):
-                            # Fall back to terminal version
-                            game_path = f"games.{game_module}"
-                            __import__(game_path)
-                            game_module = sys.modules[game_path]
-                            
-                            # Clear screen before starting the game
-                            self.clear_screen()
-                            
-                            # Run the game's main function
-                            game_module.main()
-                
-                input(f"\n{Fore.YELLOW}Game finished. Press Enter to return to the console...{Style.RESET_ALL}")
+                        # GUI version not found, fall back to terminal
+                        print(f"{Fore.YELLOW}GUI version not available for {game['name']}. Running terminal version...{Style.RESET_ALL}")
+                        time.sleep(2)
+                        
+                        game_path = f"games.{game_module}"
+                        __import__(game_path)
+                        game_module_obj = sys.modules[game_path]
+                        
+                        # Clear screen before starting the game
+                        self.clear_screen()
+                        
+                        # Run the game's main function
+                        game_module_obj.main()
             except Exception as e:
-                print(f"{Fore.RED}Error running game: {e}{Style.RESET_ALL}")
-                input(f"\n{Fore.YELLOW}Press Enter to return to the console...{Style.RESET_ALL}")
+                self.clear_screen()
+                print(f"{Fore.RED}Error loading game: {e}{Style.RESET_ALL}")
+                time.sleep(2)
         else:
             print(f"{Fore.RED}Invalid game selection.{Style.RESET_ALL}")
             time.sleep(1)

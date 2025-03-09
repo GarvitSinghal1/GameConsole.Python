@@ -111,6 +111,21 @@ The console includes the following games, all available in both terminal and GUI
 8. Blackjack - Card game to reach 21
 9. Snake - Classic snake game
 10. Text Adventure - Short interactive adventure
+11. Connect Four - Connect four discs in a row
+12. Pong - Classic arcade table tennis
+13. Tetris - Arrange falling blocks
+14. Mastermind - Break the color code
+15. Yahtzee - Roll dice for combinations
+16. Simon Says - Repeat patterns from memory
+17. Wordle - Guess the hidden word
+18. Tower of Hanoi - Solve the disc puzzle
+19. 2048 - Combine tiles to reach 2048
+20. Sudoku - Fill the grid with numbers
+21. Flappy Bird - Navigate through pipes
+22. Anagrams - Create words from letters
+23. Typing Speed Test - Test your typing skills
+24. Memory Match - Find matching card pairs
+25. Minesweeper - Clear mines from a field
 
 ## Interface Options
 
