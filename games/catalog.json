@@ -1,0 +1,72 @@
+[
+    {
+        "name": "Number Guesser",
+        "description": "Try to guess a random number between 1 and 100.",
+        "module": "number_guesser",
+        "difficulty": "Easy",
+        "players": 1
+    },
+    {
+        "name": "Hangman",
+        "description": "Classic word guessing game. Try to guess the word before the hangman is complete.",
+        "module": "hangman",
+        "difficulty": "Medium",
+        "players": 1
+    },
+    {
+        "name": "Rock Paper Scissors",
+        "description": "Play the classic Rock Paper Scissors game against the computer.",
+        "module": "rock_paper_scissors",
+        "difficulty": "Easy",
+        "players": 1
+    },
+    {
+        "name": "Quiz Game",
+        "description": "Test your knowledge with this multiple-choice quiz game.",
+        "module": "quiz_game",
+        "difficulty": "Medium",
+        "players": 1
+    },
+    {
+        "name": "Tic Tac Toe",
+        "description": "Classic Tic Tac Toe game. Play against a friend on the same computer.",
+        "module": "tic_tac_toe",
+        "difficulty": "Easy",
+        "players": 2
+    },
+    {
+        "name": "Math Challenge",
+        "description": "Test your math skills with increasingly difficult problems.",
+        "module": "math_challenge",
+        "difficulty": "Medium",
+        "players": 1
+    },
+    {
+        "name": "Word Scramble",
+        "description": "Unscramble letters to form valid words.",
+        "module": "word_scramble",
+        "difficulty": "Medium",
+        "players": 1
+    },
+    {
+        "name": "Blackjack",
+        "description": "Play the classic card game Blackjack against the dealer.",
+        "module": "blackjack",
+        "difficulty": "Medium",
+        "players": 1
+    },
+    {
+        "name": "Snake",
+        "description": "Navigate a snake to collect food and grow without hitting the walls or yourself.",
+        "module": "snake",
+        "difficulty": "Hard",
+        "players": 1
+    },
+    {
+        "name": "Text Adventure",
+        "description": "Embark on a short text-based adventure with multiple paths and endings.",
+        "module": "text_adventure",
+        "difficulty": "Medium",
+        "players": 1
+    }
+]
