@@ -189,8 +189,9 @@ class GameConsole:
     
     def run(self):
         """Run the game console."""
-        # Select interface mode first
-        self.select_interface()
+        # Only select interface mode if it hasn't been set already
+        if self.interface_mode is None:
+            self.select_interface()
         
         # If in terminal mode, continue with terminal interface
         if self.interface_mode == "terminal":
